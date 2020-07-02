@@ -1,0 +1,9 @@
+GET http://leeapps.cn:3007/get?uid=lee HTTP/1.1
+
+# POST http://leeapps.cn:3007/post HTTP/1.1
+# content-type: application/json
+
+# {
+#   "uid": "lee",
+#   "val": "212121212"
+# }
