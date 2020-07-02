@@ -3,7 +3,7 @@ import PostController from "./controller/post-controller";
 
 export default [
   {
-    path: "/home",
+    path: "/",
     method: "get",
     action: HomeController.hello,
   },
