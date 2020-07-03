@@ -13,7 +13,7 @@ const User: FunctionalComponent<Props> = (props: Props) => {
     const [list, setList] = useState<any>(["这是一条记录"]);
 
     const fetchData = () => {
-        fetch("http://pa.leeapps.cn/get?uid=" + user).then(list => {
+        fetch("http://pa.leeapps.cn/get?uid=" + user).then(res => res.json()).then(list => {
             console.log(list);
             setList(list);
         });
