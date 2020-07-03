@@ -82,3 +82,4 @@ typings/
 yarn.lock
 .vscode
 package-lock.json
+.git
