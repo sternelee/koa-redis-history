@@ -8,31 +8,56 @@ interface Props {
 
 const User: FunctionalComponent<Props> = (props: Props) => {
     const { user } = props;
-    const [time, setTime] = useState<number>(Date.now());
-    const [count, setCount] = useState<number>(0);
     const [list, setList] = useState<any>(["这是一条记录"]);
 
     const fetchData = () => {
-        fetch("http://pa.leeapps.cn/get?uid=" + user).then(res => res.json()).then(list => {
-            console.log(list);
-            setList(list);
+        fetch("/get?uid=" + user)
+            .then(res => res.json())
+            .then(list => {
+                setList(list);
+            });
+    };
+
+    const postData = (val: string) => {
+        fetch("/post", {
+            method: "POST",
+            body: JSON.stringify({
+                uid: user,
+                val
+            })
         });
     };
+
+    const pasteEvent = event => {
+        const data = event.clipboardData;
+        // const items = event.clipboardData && event.clipboardData.items;
+        // let file = null;
+        console.log(event.clipboardData);
+        if (data) {
+            const txt = event.clipboardData.getData("text/plain");
+            console.log(txt);
+            if (txt) {
+                postData(txt);
+            }
+        }
+        // console.log(event.clipboardData.getData("text/plain"));
+        // if (items && items.length) {
+        //     // 检索剪切板items
+        //     for (let i = 0; i < items.length; i++) {
+        //         console.log(items[i]);
+        //         if (items[i].type.indexOf("image") !== -1) {
+        //             file = items[i].getAsFile();
+        //             break;
+        //         }
+        //     }
+        // }
+    };
+
     // gets called when this route is navigated to
     useEffect(() => {
-        // const timer = window.setInterval(() => setTime(Date.now()), 1000);
         fetchData();
-
-        // gets called just before navigating away from the route
-        // return () => {
-        //     clearInterval(timer);
-        // };
+        document.addEventListener("paste", pasteEvent);
     }, []);
-
-    // update the current time
-    const increment = () => {
-        setCount(count + 1);
-    };
 
     return (
         <div class={style.profile}>
