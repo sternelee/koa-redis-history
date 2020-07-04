@@ -9,6 +9,7 @@ interface Props {
 const User: FunctionalComponent<Props> = (props: Props) => {
     const { user } = props;
     const [list, setList] = useState<any>(["这是一条记录"]);
+    const [txt, setTxt] = useState<any>('')
 
     const fetchData = () => {
         fetch("/get?uid=" + user)
@@ -28,7 +29,8 @@ const User: FunctionalComponent<Props> = (props: Props) => {
         });
     };
 
-    const pasteEvent = event => {
+    const pasteEvent = (event: any) => {
+        console.log("event", event);
         const data = event.clipboardData;
         // const items = event.clipboardData && event.clipboardData.items;
         // let file = null;
@@ -62,6 +64,12 @@ const User: FunctionalComponent<Props> = (props: Props) => {
     return (
         <div class={style.profile}>
             <h1>用户: {user}</h1>
+            <input
+                type="text"
+                value={txt}
+                onChange={(e: any) => setTxt(e.target.value)}
+                onKeyUp={(e: any) => e.keyCode === 13 && postData(txt)}
+            />
             <ul>
                 {list.map((v: any, index: number) => {
                     return <li key={index}>{v}</li>;
