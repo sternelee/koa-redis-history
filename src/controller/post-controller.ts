@@ -18,7 +18,6 @@ export default class PostController {
   static async post(ctx) {
     const { uid = "master", val = "" } = ctx.request.body;
     // TODO: 后续支持 3M 以内的图片
-    if (val.length > 10000) return ctx.body = "error";
     const uuid = await shortid.generate();
     await redis.set(uid + "--" + uuid, val, "EX", 60 * 60);
     ctx.body = "ok";

@@ -9,7 +9,7 @@ interface Props {
 
 const User: FunctionalComponent<Props> = (props: Props) => {
     const { user } = props;
-    const [list, setList] = useState<any>(["这是一条默认记录"]);
+    const [list, setList] = useState<any>([]);
     const [txt, setTxt] = useState<any>("");
 
     const fetchData = (): void => {
@@ -23,6 +23,9 @@ const User: FunctionalComponent<Props> = (props: Props) => {
     const postData = (val: string): void => {
         fetch("/post", {
             method: "POST",
+            headers: {
+		"Content-Type": "application/json"
+ 	    },
             body: JSON.stringify({
                 uid: user,
                 val
@@ -41,7 +44,7 @@ const User: FunctionalComponent<Props> = (props: Props) => {
         if (data) {
             const txt = event.clipboardData.getData("text/plain");
             console.log(txt);
-            if (txt) {
+            if (txt && txt.length < 1000) {
                 postData(txt);
             }
         }
