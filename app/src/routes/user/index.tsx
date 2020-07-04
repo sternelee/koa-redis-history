@@ -17,23 +17,27 @@ const User: FunctionalComponent<Props> = (props: Props) => {
             .then(res => res.json())
             .then(list => {
                 setList(list);
-            });
+            })
+            .catch(err => console.log(err));
     };
 
     const postData = (val: string): void => {
         fetch("/post", {
             method: "POST",
             headers: {
-		"Content-Type": "application/json"
- 	    },
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
                 uid: user,
                 val
             })
-        }).then(() => {
-            setTxt("");
-            setList([val, ...list]);
-        });
+        })
+            .then(res => res.json())
+            .then(() => {
+                setTxt("");
+                setList([val, ...list]);
+            })
+            .catch(err => console.log(err));
     };
 
     const pasteEvent = (event: any): void => {
