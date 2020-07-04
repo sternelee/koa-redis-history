@@ -1,6 +1,7 @@
 import { FunctionalComponent, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import * as style from "./style.css";
+import { copyToClipboard } from "../../utils";
 
 interface Props {
     user: string;
@@ -8,10 +9,10 @@ interface Props {
 
 const User: FunctionalComponent<Props> = (props: Props) => {
     const { user } = props;
-    const [list, setList] = useState<any>(["这是一条记录"]);
-    const [txt, setTxt] = useState<any>('')
+    const [list, setList] = useState<any>(["这是一条默认记录"]);
+    const [txt, setTxt] = useState<any>("");
 
-    const fetchData = () => {
+    const fetchData = (): void => {
         fetch("/get?uid=" + user)
             .then(res => res.json())
             .then(list => {
@@ -19,22 +20,24 @@ const User: FunctionalComponent<Props> = (props: Props) => {
             });
     };
 
-    const postData = (val: string) => {
+    const postData = (val: string): void => {
         fetch("/post", {
             method: "POST",
             body: JSON.stringify({
                 uid: user,
                 val
             })
+        }).then(() => {
+            setTxt("");
+            setList([val, ...list]);
         });
     };
 
-    const pasteEvent = (event: any) => {
+    const pasteEvent = (event: any): void => {
         console.log("event", event);
         const data = event.clipboardData;
         // const items = event.clipboardData && event.clipboardData.items;
         // let file = null;
-        console.log(event.clipboardData);
         if (data) {
             const txt = event.clipboardData.getData("text/plain");
             console.log(txt);
@@ -42,8 +45,8 @@ const User: FunctionalComponent<Props> = (props: Props) => {
                 postData(txt);
             }
         }
-        // console.log(event.clipboardData.getData("text/plain"));
         // if (items && items.length) {
+        //     console.log(items);
         //     // 检索剪切板items
         //     for (let i = 0; i < items.length; i++) {
         //         console.log(items[i]);
@@ -55,16 +58,41 @@ const User: FunctionalComponent<Props> = (props: Props) => {
         // }
     };
 
+    const dropEvent = (event: any): void => {
+        event.stopPropagation();
+        event.preventDefault();
+        const files = event.dataTransfer.files;
+        for (let i = 0; i < files.length; i++) {
+            const img = files[i];
+            console.log(img);
+            if (img.type.indexOf("image") < 0 || img.size > 1024 * 512)
+                continue;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log(e.target.result);
+                postData(e.target.result);
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    };
+
     // gets called when this route is navigated to
     useEffect(() => {
         fetchData();
         document.addEventListener("paste", pasteEvent);
+        document.addEventListener("drop", dropEvent);
     }, []);
+
+    const copyData = (str: string): void => {
+        copyToClipboard(str);
+    };
 
     return (
         <div class={style.profile}>
-            <h1>用户: {user}</h1>
+            <h2>欢迎您: {user}</h2>
             <input
+                class={style.input}
+                placeholder="输入文字，或拖入图片"
                 type="text"
                 value={txt}
                 onChange={(e: any) => setTxt(e.target.value)}
@@ -72,7 +100,11 @@ const User: FunctionalComponent<Props> = (props: Props) => {
             />
             <ul>
                 {list.map((v: any, index: number) => {
-                    return <li key={index}>{v}</li>;
+                    return (
+                        <li key={index} onClick={() => copyData(v)}>
+                            {v.indexOf("data") !== 0 ? v : <img src={v} />}
+                        </li>
+                    );
                 })}
             </ul>
         </div>
