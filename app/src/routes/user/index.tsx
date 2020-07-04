@@ -68,9 +68,10 @@ const User: FunctionalComponent<Props> = (props: Props) => {
             if (img.type.indexOf("image") < 0 || img.size > 1024 * 512)
                 continue;
             const reader = new FileReader();
-            reader.onload = function(e) {
-                console.log(e.target.result);
-                postData(e.target.result);
+            reader.onload = function(e): void {
+                const data = e.target && e.target.result;
+                console.log(data);
+                data && postData(String(data));
             };
             reader.readAsDataURL(files[i]);
         }
