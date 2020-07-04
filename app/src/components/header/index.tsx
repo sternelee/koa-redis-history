@@ -6,7 +6,7 @@ const Header: FunctionalComponent = () => {
     return (
         <header class={style.header}>
             <div class={style.inner}>
-                <h1>PA 同步您的记录</h1>
+                <h1>PA 同步你的记录</h1>
                 <nav>
                     <Link activeClassName={style.active} href="/">
                         Home

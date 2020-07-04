@@ -1,6 +1,6 @@
 {
-  "name": "koa",
-  "short_name": "koa",
+  "name": "PA 同步你的记录",
+  "short_name": "PA",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
