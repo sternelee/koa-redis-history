@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from "preact";
 import { Route, Router, RouterOnChangeArgs } from "preact-router";
 
 import Home from "../routes/home";
-import Profile from "../routes/profile";
+// import Profile from "../routes/profile";
 import NotFoundPage from "../routes/notfound";
 import Header from "./header";
 import User from "../routes/user";

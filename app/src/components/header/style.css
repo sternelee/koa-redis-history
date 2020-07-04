@@ -13,6 +13,8 @@
 .header .inner {
     max-width: 1080px;
     margin: 0 auto;
+    display: flex;
+    overflow: hidden;
 }
 
 .header h1 {
@@ -26,8 +28,8 @@
 }
 
 .header nav {
-    float: right;
     font-size: 100%;
+    margin-left: auto;
 }
 
 .header nav a {

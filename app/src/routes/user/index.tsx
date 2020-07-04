@@ -32,7 +32,6 @@ const User: FunctionalComponent<Props> = (props: Props) => {
                 val
             })
         })
-            .then(res => res.json())
             .then(() => {
                 setTxt("");
                 setList([val, ...list]);
@@ -98,14 +97,17 @@ const User: FunctionalComponent<Props> = (props: Props) => {
     return (
         <div class={style.profile}>
             <h2>欢迎您: {user}</h2>
-            <input
-                class={style.input}
-                placeholder="输入文字，或拖入图片"
-                type="text"
-                value={txt}
-                onChange={(e: any) => setTxt(e.target.value)}
-                onKeyUp={(e: any) => e.keyCode === 13 && postData(txt)}
-            />
+            <p>
+                <input
+                    class={style.input}
+                    placeholder="输入文字并回车，或拖入图片"
+                    type="text"
+                    value={txt}
+                    onChange={(e: any) => setTxt(e.target.value)}
+                    onKeyUp={(e: any) => e.keyCode === 13 && postData(txt)}
+                />
+            </p>
+
             <ul>
                 {list.map((v: any, index: number) => {
                     return (
