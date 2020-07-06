@@ -17,6 +17,7 @@
     border-radius: 6px;
     border-color: #d1d9e6;
     box-shadow: 3px 3px 6px #b8b9be, -3px -3px 6px #fff;
+    word-break: break-all;
 }
 
 .profile ul li:hover {
