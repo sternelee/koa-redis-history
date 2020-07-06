@@ -19,7 +19,7 @@ export default class PostController {
     const { uid = "master", val = "" } = ctx.request.body;
     // TODO: 后续支持 3M 以内的图片
     const uuid = await shortid.generate();
-    await redis.set(uid + "--" + uuid, val, "EX", 60 * 60);
+    await redis.set(uid + "--" + uuid, val, "EX", 60 * 60 * 6);
     ctx.body = "ok";
   }
 }
